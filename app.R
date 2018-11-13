@@ -3,7 +3,7 @@
 #
 # Group member task 1: Alexander Kruskal
 # Group member task 2:
-# Group member task 3:
+# Group member task 3: Anran Huang
 #
 
 library(shiny)
