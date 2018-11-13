@@ -1,7 +1,7 @@
 #
 # HDAT 9800 Group Assessment — Health Explorer
 #
-# Group member task 1:
+# Group member task 1: Alexander Kruskal
 # Group member task 2:
 # Group member task 3:
 #
