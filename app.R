@@ -26,6 +26,20 @@ ui <- fluidPage(
              sidebarLayout(
                sidebarPanel(
                  # add task 1 sidebar elements here
+                 
+                 # Input: Selector for choosing State ----
+                 selectInput(inputId = "State",
+                             label = "State",
+                             choices = c("All", "New South Wales", "Victoria", "Queensland", "South Australia",
+                                         "Tasmania", "Western Australia", "Northern Territory", "Australian Capital Territory")),
+                 # Input: Selector for choosing Sector ----
+                 selectInput(inputId = "Sector",
+                             label = "Sector",
+                             choices = c("All", "Public", "Private")),
+                 # Input: Selector for choosing Beds ----
+                 selectInput(inputId = "Beds",
+                             label = "Beds",
+                             choices = c("Any", ">500", "200-500", "100-199", "50-99", "<50", "Other")),
                ),
                
                mainPanel(
