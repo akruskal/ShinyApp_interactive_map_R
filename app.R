@@ -16,8 +16,15 @@ library(ggplot2)
 
 Task1.data <- read.csv('data/hospitals.csv')
 names(Task1.data) <- make.names(names(Task1.data))
+levels(Task1.data$State) <- c("ACT", "NSW", "NT",  "QLD", "QLD", "SA",  "TAS", "VIC", "WA")
 
 State_polys = readOGR("data/STE_2016_AUST.shp")
+
+HospitalIcons <- awesomeIconList(
+  Public = makeAwesomeIcon(icon = 'hospital-o', markerColor = 'green', iconColor = 'white', library = "fa"),
+  Private = makeAwesomeIcon(icon = 'hospital-o', markerColor = 'orange', iconColor = 'white', library = "fa")
+)
+
 
 
 
@@ -95,9 +102,13 @@ server <- function(input, output) {
   output$Map1 <- renderLeaflet({
     
     
-      leaflet() %>%
+      leaflet(Task1.data) %>%
       addTiles() %>%
-      addPolygons(data=State_polys, weight=2)
+      addPolygons(data=State_polys, weight=2) %>%
+      addAwesomeMarkers(lng = ~Longitude, lat = ~Latitude,icon=~HospitalIcons[Sector], 
+                        label = Task1.data$Hospital.name,
+                        popup = paste(Task1.data$Hospital.name, Task1.data$Phone.number, Task1.data$Website, Task1.data$Description
+                        ) )
     })
 }
 
