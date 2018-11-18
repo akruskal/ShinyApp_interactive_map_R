@@ -39,11 +39,13 @@ ui <- fluidPage(
                  # Input: Selector for choosing Beds ----
                  selectInput(inputId = "Beds",
                              label = "Beds",
-                             choices = c("Any", ">500", "200-500", "100-199", "50-99", "<50", "Other")),
+                             choices = c("Any", ">500", "200-500", "100-199", "50-99", "<50", "Other"))
                ),
                
                mainPanel(
                  # add task 1 main panel elements here
+                 plotOutput('plot')
+                
                )
              )
              
