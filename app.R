@@ -18,7 +18,7 @@ library(plotly)
 library(zoo)
 library(lubridate)
 
-data3 <- read_csv("/Users/anranhuang/Desktop/HDAT9700/GroupAssess9800/data/myhospitals-average-length-of-stay-data.csv")
+data3 <- read_csv("data/myhospitals-average-length-of-stay-data.csv")
 data3$`Peer group` <- as.factor(data3$`Peer group`)
 data3$`Category` <- as.factor(data3$`Category`)
 data3$`Time period`<- as.factor(data3$`Time period`)
