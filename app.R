@@ -14,6 +14,13 @@ library(leaflet)
 library(leaflet.extras)
 library(ggplot2)
 
+Task1.data <- read.csv('data/hospitals.csv')
+names(Task1.data) <- make.names(names(Task1.data))
+
+State_polys = readOGR("data/STE_2016_AUST.shp")
+
+
+
 # Define UI for application
 ui <- fluidPage(
   
@@ -44,7 +51,7 @@ ui <- fluidPage(
                
                mainPanel(
                  # add task 1 main panel elements here
-                 plotOutput('plot')
+                 leafletOutput('Map1')
                 
                )
              )
@@ -81,9 +88,17 @@ ui <- fluidPage(
 
 # Define server logic
 server <- function(input, output) {
-
-  # add your output slot render functions here
   
+
+
+  
+  output$Map1 <- renderLeaflet({
+    
+    
+      leaflet() %>%
+      addTiles() %>%
+      addPolygons(data=State_polys, weight=2)
+    })
 }
 
 # Run the application 
