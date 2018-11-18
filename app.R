@@ -85,7 +85,7 @@ ui <- fluidPage(
                
                mainPanel(
                  # add task 3 main panel elements here
-                 plotOutput("plot")
+                 plotOutput("plot3")
                )
              )
              
@@ -97,7 +97,7 @@ ui <- fluidPage(
 server <- function(input, output) {
 
   # add your output slot render functions here
-  output$plot<-renderPlot({
+  output$plot3<-renderPlot({
     selectedData <- reactive({
       data3 %>% filter(`Peer group`==input$peers, `Category`==input$categ) 
     })
