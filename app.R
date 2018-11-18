@@ -104,7 +104,7 @@ server <- function(input, output) {
     
       leaflet(Task1.data) %>%
       addTiles() %>%
-      addPolygons(data=State_polys, weight=2) %>%
+      addPolygons(data=State_polys, weight=2, fillColor = "transparent") %>%
       addAwesomeMarkers(lng = ~Longitude, lat = ~Latitude,icon=~HospitalIcons[Sector], 
                         label = Task1.data$Hospital.name,
                         popup = paste(Task1.data$Hospital.name, Task1.data$Phone.number, Task1.data$Website, Task1.data$Description
