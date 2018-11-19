@@ -25,8 +25,30 @@ HospitalIcons <- awesomeIconList(
   Private = makeAwesomeIcon(icon = 'hospital-o', markerColor = 'orange', iconColor = 'white', library = "fa")
 )
 
+#premake csv for different sectors to reduce processeing time changing
+Any_sector_hosp_data <- Task1.data[]
+Public_hosp_data <- Task1.data[Task1.data$Sector == 'Public',]
+Private_hosp_data <- Task1.data[Task1.data$Sector == 'Private',]
 
+#premake csv for different States to reduce processeing time changing
+All_states_hosp_data <- Task1.data[]
+ACT_hosp_data <- Task1.data[Task1.data$State == 'ACT',]
+NSW_hosp_data <- Task1.data[Task1.data$State == 'NSW',]
+NT_hosp_data <- Task1.data[Task1.data$State == 'NT',]
+QLD_hosp_data <- Task1.data[Task1.data$State == 'QLD',]
+SA_hosp_data <- Task1.data[Task1.data$State == 'SA',]
+TAS_hosp_data <- Task1.data[Task1.data$State == 'TAS',]
+VIC_hosp_data <- Task1.data[Task1.data$State == 'VIC',]
+WA_hosp_data <- Task1.data[Task1.data$State == 'WA',]
 
+#premake csv for different Beds to reduce processeing time changing
+Any_beds_hosp_data <- Task1.data[]
+GreaterthanFivehundred_hosp_data <- Task1.data[Task1.data$Beds == '>500',]
+Twotofivehundred_hosp_data <- Task1.data[Task1.data$Beds == '200-500',]
+Onehundredtooneninetynine_hosp_data <- Task1.data[Task1.data$Beds == '100-199',]
+Fiftytoninetynine_hosp_data <- Task1.data[Task1.data$Beds == '50-99',]
+LessthanFifty_hosp_data <- Task1.data[Task1.data$Beds == '<50',]
+Other_hosp_data <- Task1.data[Task1.data$Beds == '',]
 
 # Define UI for application
 ui <- fluidPage(
