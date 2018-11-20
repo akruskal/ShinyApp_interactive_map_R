@@ -165,7 +165,12 @@ server <- function(input, output) {
                         label = Task1.data$Hospital.name,
                         popup = paste('<b>', Task1.data$Hospital.name, '</b> <br> Phone:', Task1.data$Phone.number, '<br> Website:', Task1.data$Website, '<br> Description:', Task1.data$Description
                         ) )
-    })
+  })
+  
+
+
+  
+    
 }
 
 # Run the application 
