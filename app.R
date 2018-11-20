@@ -18,6 +18,7 @@ library(ggplot2)
 Task1.data <- read.csv('data/hospitals.csv')
 names(Task1.data) <- make.names(names(Task1.data))
 levels(Task1.data$State) <- c("ACT", "NSW", "NT",  "QLD", "QLD", "SA",  "TAS", "VIC", "WA")
+colnames(Task1.data)[1] <- "Hospital.name"
 
 State_polys = readOGR("data/STE_2016_AUST.shp")
 
@@ -162,7 +163,7 @@ server <- function(input, output) {
       addPolygons(data=State_polys, weight=2, fillColor = "transparent") %>%
       addAwesomeMarkers(lng = ~Longitude, lat = ~Latitude,icon=~HospitalIcons[Sector], 
                         label = Task1.data$Hospital.name,
-                        popup = paste(Task1.data$Hospital.name, Task1.data$Phone.number, Task1.data$Website, Task1.data$Description
+                        popup = paste('<b>', Task1.data$Hospital.name, '</b> <br> Phone:', Task1.data$Phone.number, '<br> Website:', Task1.data$Website, '<br> Description:', Task1.data$Description
                         ) )
     })
 }
