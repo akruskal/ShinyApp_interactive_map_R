@@ -14,6 +14,7 @@ library(leaflet)
 library(leaflet.extras)
 library(ggplot2)
 
+#**** Task 1 preprocessing ***************************************************
 Task1.data <- read.csv('data/hospitals.csv')
 names(Task1.data) <- make.names(names(Task1.data))
 levels(Task1.data$State) <- c("ACT", "NSW", "NT",  "QLD", "QLD", "SA",  "TAS", "VIC", "WA")
@@ -25,30 +26,6 @@ HospitalIcons <- awesomeIconList(
   Private = makeAwesomeIcon(icon = 'hospital-o', markerColor = 'orange', iconColor = 'white', library = "fa")
 )
 
-#premake csv for different sectors to reduce processeing time changing
-Any_sector_hosp_data <- Task1.data[]
-Public_hosp_data <- Task1.data[Task1.data$Sector == 'Public',]
-Private_hosp_data <- Task1.data[Task1.data$Sector == 'Private',]
-
-#premake csv for different States to reduce processeing time changing
-All_states_hosp_data <- Task1.data[]
-ACT_hosp_data <- Task1.data[Task1.data$State == 'ACT',]
-NSW_hosp_data <- Task1.data[Task1.data$State == 'NSW',]
-NT_hosp_data <- Task1.data[Task1.data$State == 'NT',]
-QLD_hosp_data <- Task1.data[Task1.data$State == 'QLD',]
-SA_hosp_data <- Task1.data[Task1.data$State == 'SA',]
-TAS_hosp_data <- Task1.data[Task1.data$State == 'TAS',]
-VIC_hosp_data <- Task1.data[Task1.data$State == 'VIC',]
-WA_hosp_data <- Task1.data[Task1.data$State == 'WA',]
-
-#premake csv for different Beds to reduce processeing time changing
-Any_beds_hosp_data <- Task1.data[]
-GreaterthanFivehundred_hosp_data <- Task1.data[Task1.data$Beds == '>500',]
-Twotofivehundred_hosp_data <- Task1.data[Task1.data$Beds == '200-500',]
-Onehundredtooneninetynine_hosp_data <- Task1.data[Task1.data$Beds == '100-199',]
-Fiftytoninetynine_hosp_data <- Task1.data[Task1.data$Beds == '50-99',]
-LessthanFifty_hosp_data <- Task1.data[Task1.data$Beds == '<50',]
-Other_hosp_data <- Task1.data[Task1.data$Beds == '',]
 
 # Define UI for application
 ui <- fluidPage(
@@ -118,13 +95,69 @@ ui <- fluidPage(
 # Define server logic
 server <- function(input, output) {
   
+  StateInput <- reactive({
+    switch(input$State,
+           "All" = 1, 
+           "New South Wales" = Task1.data$State == 'NSW', 
+           "Victoria" = Task1.data$State == 'VIC', 
+           "Queensland" = Task1.data$State == 'QLD', 
+           "South Australia" = Task1.data$State == 'SA',
+           "Tasmania" = Task1.data$State == 'TAS', 
+           "Western Australia" = Task1.data$State == 'WA', 
+           "Northern Territory" = Task1.data$State == 'NT', 
+           "Australian Capital Territory" = Task1.data$State == 'ACT')
+  
+  })
+  
+  SectorInput <- reactive({
+    switch(input$Sector,
+           "All" = 1, 
+           "Public" = Task1.data$Sector == 'Public', 
+           "Private" = Task1.data$Sector == 'Private')
+    
+  })
+  
+  BedsInput <- reactive({
+    switch(input$Beds,
+           "Any" = 1, 
+           ">500" = Task1.data$Beds == '>500', 
+           "200-500" = Task1.data$Beds == '200-500',
+           "100-199" = Task1.data$Beds == '100-199',
+           "50-99" = Task1.data$Beds == '50-99',
+           "<50" = Task1.data$Beds == '<50',
+           "Other" = Task1.data$Beds == '')
+    
+  })
 
 
   
+  
   output$Map1 <- renderLeaflet({
     
+    # 4 combinations of state inputs selected any with another one selected all  
+    if (StateInput() == 1 & SectorInput() == 1 & BedsInput() == 1){
+      Task1.reactive <- Task1.data[]
+    }else if (StateInput() == 1 & SectorInput() == 1){
+      Task1.reactive <- Task1.data[BedsInput(),]
+    }else if(StateInput() == 1 & BedsInput() == 1){
+      Task1.reactive <- Task1.data[SectorInput(),]
+    }else if(StateInput() == 1) {
+      Task1.reactive <- Task1.data[SectorInput() & BedsInput(),]
+    # 2 combos left for SectorInputs() is all
+    }else if(SectorInput() == 1 & BedsInput() == 1) {
+      Task1.reactive <- Task1.data[StateInput(),]
+    }else if(SectorInput() == 1) {
+      Task1.reactive <- Task1.data[StateInput() & BedsInput(),]
+    # 1 combo for BedsInput() is any
+    }else if(BedsInput() == 1) {
+      Task1.reactive <- Task1.data[StateInput() & SectorInput(),]
+    }else {
+      Task1.reactive <- Task1.data[StateInput() & SectorInput() & BedsInput(),]
+    }
+      
     
-      leaflet(Task1.data) %>%
+    
+      leaflet(Task1.reactive) %>%
       addTiles() %>%
       addPolygons(data=State_polys, weight=2, fillColor = "transparent") %>%
       addAwesomeMarkers(lng = ~Longitude, lat = ~Latitude,icon=~HospitalIcons[Sector], 
